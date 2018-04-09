@@ -1,0 +1,47 @@
+{
+    "name": "tymon/jwt-auth",
+    "description": "JSON Web Token Authentication for Laravel and Lumen",
+    "keywords": ["laravel", "auth"],
+    "require": {
+        "php": "^5.5.9 || ^7.0",
+        "illuminate/auth": "5.*",
+        "illuminate/contracts": "5.*",
+        "illuminate/http": "5.*",
+        "illuminate/support": "5.*",
+        "lcobucci/jwt": "^3.2",
+        "namshi/jose": "^7.0",
+        "nesbot/carbon": "^1.0"
+    },
+    "require-dev": {
+        "cartalyst/sentinel": "2.0.*",
+        "illuminate/console": "5.*",
+        "illuminate/database": "5.*",
+        "illuminate/routing": "5.*",
+        "mockery/mockery": ">=0.9.9",
+        "phpunit/phpunit": "~4.8 || ~6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ethanzway\\JWT\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Ethanzway\\JWT\\Test\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Ethanzway\\JWT\\Provider\\LaravelServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "scripts": {
+        "test": "phpunit --colors=always",
+        "test:ci": "composer test -- --verbose --coverage-text --coverage-clover=coverage.xml"
+    }
+}
