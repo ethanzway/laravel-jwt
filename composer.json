@@ -1,7 +1,7 @@
 {
-    "name": "tymon/jwt-auth",
+    "name": "laravel/jwt",
     "description": "JSON Web Token Authentication for Laravel and Lumen",
-    "keywords": ["laravel", "auth"],
+    "keywords": ["laravel", "jwt"],
     "require": {
         "php": "^5.5.9 || ^7.0",
         "illuminate/auth": "5.*",
