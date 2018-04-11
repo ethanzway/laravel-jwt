@@ -33,7 +33,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Ethanzway\\JWT\\Provider\\LaravelServiceProvider"
+                "Ethanzway\\JWT\\Provider\\JWTServiceProvider"
             ]
         }
     },

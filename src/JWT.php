@@ -12,7 +12,6 @@ namespace Ethanzway\JWT;
 use BadMethodCallException;
 use Illuminate\Http\Request;
 use Ethanzway\JWT\Parser\Parser;
-use Ethanzway\JWT\Contracts\Subject;
 use Ethanzway\JWT\Support\CustomClaims;
 use Ethanzway\JWT\Exceptions\JWTException;
 
@@ -65,27 +64,15 @@ class JWT
     /**
      * Generate a token for a given subject.
      *
-     * @param  \Ethanzway\JWT\Contracts\Subject  $subject
+     * @param $subject
      *
      * @return string
      */
-    public function fromSubject(Subject $subject)
+    public function fromSubject($subject, $identifier, $claims)
     {
-        $payload = $this->makePayload($subject);
+        $payload = $this->makePayload($subject, $identifier, $claims);
 
         return $this->manager->encode($payload)->get();
-    }
-
-    /**
-     * Alias to generate a token for a given user.
-     *
-     * @param  \Ethanzway\JWT\Contracts\Subject  $user
-     *
-     * @return string
-     */
-    public function fromUser(Subject $user)
-    {
-        return $this->fromSubject($user);
     }
 
     /**
@@ -223,43 +210,20 @@ class JWT
     /**
      * Create a Payload instance.
      *
-     * @param  \Ethanzway\JWT\Contracts\Subject  $subject
+     * @param $subject
      *
      * @return \Ethanzway\JWT\Payload
      */
-    public function makePayload(Subject $subject)
+    public function makePayload($subject, $identifier, $claims)
     {
-        return $this->factory()->customClaims($this->getClaimsArray($subject))->make();
-    }
-
-    /**
-     * Build the claims array and return it.
-     *
-     * @param  \Ethanzway\JWT\Contracts\Subject  $subject
-     *
-     * @return array
-     */
-    protected function getClaimsArray(Subject $subject)
-    {
-        return array_merge(
-            $this->getClaimsForSubject($subject),
-            $subject->getCustomClaims(), // custom claims from Subject method
-            $this->customClaims // custom claims from inline setter
+		$claims = array_merge(
+            array_merge([
+				'sub' => $identifier,
+			], $this->lockSubject ? ['prv' => $this->hashSubjectModel($subject)] : []),
+            $claims,
+            $this->customClaims
         );
-    }
-
-    /**
-     * Get the claims associated with a given subject.
-     *
-     * @param  \Ethanzway\JWT\Contracts\Subject  $subject
-     *
-     * @return array
-     */
-    protected function getClaimsForSubject(Subject $subject)
-    {
-        return array_merge([
-            'sub' => $subject->getIdentifier(),
-        ], $this->lockSubject ? ['prv' => $this->hashSubjectModel($subject)] : []);
+        return $this->factory()->customClaims($claims)->make();
     }
 
     /**
