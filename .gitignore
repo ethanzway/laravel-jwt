@@ -1,4 +1,4 @@
 /vendor
+composer.phar
 composer.lock
-build
-coverage.xml
+.DS_Store
